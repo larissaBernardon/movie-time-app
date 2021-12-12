@@ -1,3 +1,6 @@
+import 'package:json_annotation/json_annotation.dart';
+part 'movie.g.dart';
+
 enum Genre {
   horror,
   action,
@@ -7,31 +10,24 @@ enum Genre {
   romance,
 }
 
+@JsonSerializable()
 class Movie {
-  final String id;
+  final int id;
   final String title;
   final String synopsis;
   final String genre;
-  final String photoUrl;
+  final String coverUrl;
 
   Movie({
     required this.id,
     required this.title,
     required this.synopsis,
     required this.genre,
-    required this.photoUrl,
+    required this.coverUrl,
   });
 
-  factory Movie.mock() {
-    return Movie(
-      id: '1',
-      title: 'Harry Potter',
-      synopsis: 'synopsis here',
-      genre: 'horror',
-      photoUrl:
-          'https://images-na.ssl-images-amazon.com/images/I/91++nYXJ5dL.jpg',
-    );
-  }
+  factory Movie.fromJson(json) => _$MovieFromJson(json);
+  toJson() => _$MovieToJson(this);
 
   Genre genreToEnum() {
     switch (genre) {

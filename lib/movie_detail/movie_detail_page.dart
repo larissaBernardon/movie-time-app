@@ -22,7 +22,7 @@ class MovieDetailPage extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.40,
             width: MediaQuery.of(context).size.width,
             child: Image.network(
-              movie.photoUrl,
+              movie.coverUrl,
               fit: BoxFit.fitWidth,
             ),
           ),

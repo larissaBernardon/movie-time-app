@@ -13,7 +13,7 @@ class MovieWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Image.network(
-        movie.photoUrl,
+        movie.coverUrl,
         fit: BoxFit.fill,
       ),
       onTap: () {

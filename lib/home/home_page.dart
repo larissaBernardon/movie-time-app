@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:movie_time_app/core/models/movie.dart';
-import 'package:movie_time_app/core/models/movie_list.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:movie_time_app/home/home_controller.dart';
 import 'package:movie_time_app/home/widgets/movie_section.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
+
+  final MovieController controller;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -12,6 +17,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.getMovies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +48,26 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildLists() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      child: Column(
-        children: _buildMoviesLists(),
-      ),
-    );
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: Observer(
+          builder: (BuildContext context) {
+            if (widget.controller.requestIsLoadig) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            if (widget.controller.movieListsResponse != null) {
+              return Expanded(
+                child: Column(
+                  children: _buildMoviesLists(),
+                ),
+              );
+            }
+
+            return Container();
+          },
+        ));
   }
 
   BottomNavigationBar _buildBottomBar() {
@@ -70,21 +96,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   List<Widget> _buildMoviesLists() {
-    final lists = [
-      MovieList.mock(Genre.horror),
-      MovieList.mock(Genre.comedy),
-      MovieList.mock(Genre.drama),
-      MovieList.mock(Genre.romance),
-      MovieList.mock(Genre.fantasy),
-      MovieList.mock(Genre.action),
-    ];
-    return lists.map(_buildList).toList();
-  }
-
-  Widget _buildList(MovieList list) {
-    return MovieSection(
-      title: list.listTitle,
-      list: list,
-    );
+    return widget.controller.movieListsResponse!
+        .map((list) => MovieSection(
+              list: list,
+              title: list.listTitle,
+            ))
+        .toList();
   }
 }

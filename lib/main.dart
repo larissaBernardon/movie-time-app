@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:movie_time_app/home/home_page.dart';
 
+import 'home/home_controller.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -13,7 +15,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.dark(),
-      home: const HomePage(),
+      home: HomePage(
+        controller: MovieController(),
+      ),
     );
   }
 }
