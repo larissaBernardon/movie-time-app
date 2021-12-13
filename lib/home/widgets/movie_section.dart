@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_time_app/core/models/movie_list.dart';
+import 'package:movie_time_app/home/widgets/movie_carousel_slider_expanded.dart';
 import 'package:movie_time_app/home/widgets/movie_carousel_widget.dart';
 
 class MovieSection extends StatelessWidget {
@@ -25,11 +26,14 @@ class MovieSection extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(bottom: 12.0),
-          child: MovieCarouselWidget(
-            list: list,
-          ),
-        )
+            padding: const EdgeInsets.only(bottom: 12.0),
+            child: list.listTitle == 'Suspense'
+                ? MovieCarouselExpanded(
+                    movies: list,
+                  )
+                : MovieCarouselWidget(
+                    list: list,
+                  ))
       ],
     );
   }

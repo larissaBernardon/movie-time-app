@@ -19,7 +19,7 @@ class MovieDetailPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.40,
+            height: MediaQuery.of(context).size.height * 0.50,
             width: MediaQuery.of(context).size.width,
             child: Image.network(
               movie.coverUrl,
