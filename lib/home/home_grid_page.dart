@@ -33,7 +33,7 @@ class _HomeGridPageState extends State<HomeGridPage> {
 
   Widget _buildGridView() {
     return GridView.builder(
-      padding: EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       itemCount: widget.movies.length,
       itemBuilder: (BuildContext context, int index) {
         return MovieWidget(

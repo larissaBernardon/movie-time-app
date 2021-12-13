@@ -12,9 +12,12 @@ class MovieWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: Image.network(
-        movie.coverUrl,
-        fit: BoxFit.fill,
+      child: AspectRatio(
+        aspectRatio: 1 / 1.5,
+        child: Image.network(
+          movie.coverUrl,
+          fit: BoxFit.fill,
+        ),
       ),
       onTap: () {
         Navigator.push(
