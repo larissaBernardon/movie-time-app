@@ -25,6 +25,21 @@ mixin _$MovieController on _MovieControllerBase, Store {
     });
   }
 
+  final _$moviesAtom = Atom(name: '_MovieControllerBase.movies');
+
+  @override
+  List<Movie>? get movies {
+    _$moviesAtom.reportRead();
+    return super.movies;
+  }
+
+  @override
+  set movies(List<Movie>? value) {
+    _$moviesAtom.reportWrite(value, super.movies, () {
+      super.movies = value;
+    });
+  }
+
   final _$requestIsLoadigAtom =
       Atom(name: '_MovieControllerBase.requestIsLoadig');
 
@@ -52,6 +67,7 @@ mixin _$MovieController on _MovieControllerBase, Store {
   String toString() {
     return '''
 movieListsResponse: ${movieListsResponse},
+movies: ${movies},
 requestIsLoadig: ${requestIsLoadig}
     ''';
   }

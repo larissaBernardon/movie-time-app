@@ -12,20 +12,22 @@ abstract class _MovieControllerBase with Store {
   List<MovieList>? movieListsResponse;
 
   @observable
+  List<Movie>? movies;
+
+  @observable
   bool requestIsLoadig = false;
 
   @action
   Future getMovies() async {
     requestIsLoadig = true;
     try {
-      final response = await Dio().get('http://192.168.0.6:3000/movies');
+      final response = await Dio().get('http://192.168.0.3:3000/movies');
 
       final responseData = response.data as List;
 
-      final movies =
-          responseData.map((movie) => Movie.fromJson(movie)).toList();
+      movies = responseData.map((movie) => Movie.fromJson(movie)).toList();
 
-      movieListsResponse = mapMoviesToMoviesLists(movies);
+      movieListsResponse = mapMoviesToMoviesLists(movies!);
     } catch (error) {
       print(error);
     }

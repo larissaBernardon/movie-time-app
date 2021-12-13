@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:movie_time_app/home/home_controller.dart';
+import 'package:movie_time_app/home/home_grid_page.dart';
 import 'package:movie_time_app/home/widgets/movie_section.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,6 +17,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final PageController _pageController = PageController();
+
   int _selectedIndex = 0;
 
   @override
@@ -28,8 +31,15 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
+      body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
+        controller: _pageController,
+        children: [
+          _buildLists(),
+          _buildGridView(),
+        ],
+      ),
       bottomNavigationBar: _buildBottomBar(),
-      body: _buildLists(),
     );
   }
 
@@ -48,26 +58,35 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildLists() {
     return SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        child: Observer(
-          builder: (BuildContext context) {
-            if (widget.controller.requestIsLoadig) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Observer(
+        builder: (BuildContext context) {
+          if (widget.controller.requestIsLoadig) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
 
-            if (widget.controller.movieListsResponse != null) {
-              return Expanded(
-                child: Column(
-                  children: _buildMoviesLists(),
-                ),
-              );
-            }
+          if (widget.controller.movieListsResponse != null) {
+            return Column(
+              children: _buildMoviesLists(),
+            );
+          }
 
-            return Container();
-          },
-        ));
+          return Container();
+        },
+      ),
+    );
+  }
+
+  Widget _buildGridView() {
+    return Observer(
+      builder: (BuildContext context) {
+        return HomeGridPage(
+          movies: widget.controller.movies ?? [],
+        );
+      },
+    );
   }
 
   BottomNavigationBar _buildBottomBar() {
@@ -92,6 +111,7 @@ class _HomePageState extends State<HomePage> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      _pageController.jumpToPage(index);
     });
   }
 
